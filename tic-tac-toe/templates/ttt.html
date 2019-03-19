@@ -1,0 +1,90 @@
+<!doctype html>
+
+<html en="lang">
+
+    <head>
+        <title>Tic Tac Toe</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+        
+        <!-- Font Awesome -->
+        <script src="https://use.fontawesome.com/60107db17d.js"></script>
+        <link href="https://use.fontawesome.com/60107db17d.css" media="all" rel="stylesheet">
+        
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Cirrus -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.5.4/dist/cirrus.min.css">
+
+        <!-- Internal -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ttt.css') }}"/>
+    </head>
+
+    <body class="center">
+        {% if not current_user.is_authenticated %}
+        <div id="login" class="content">
+            <div class="row text-center">
+                <div class="col-4 offset-4">
+                    {% include 'login.html' %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="content">
+            <div class="row text-center">
+                <div class="col-8 offset-2">
+                    {% if current_user.is_authenticated %}
+                    <p class="login-greeting" style="font-size: 4rem;">Hi, <strong>{{ current_user.username }}</strong>.</p>
+                    <div class="divider"></div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if current_user.is_authenticated %}
+            <div id="ttt-board" align=center>
+                <table id="ttt-table">
+                    <tr>
+                        <td id="cell-0"></td>
+                        <td id="cell-1"></td>
+                        <td id="cell-2"></td>
+                    </tr>
+                    <tr>
+                        <td id="cell-3"></td>
+                        <td id="cell-4"></td>
+                        <td id="cell-5"></td>
+                    </tr>
+                    <tr>
+                        <td id="cell-6"></td>
+                        <td id="cell-7"></td>
+                        <td id="cell-8"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="winner" align="center"></div>
+            {% endif %}
+        
+
+            {% if current_user.is_authenticated %}
+            <div id="logout-button">
+                <form method="post", action="/logout">
+                    <button type="submit" class="animated btn-success center">Log Out</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        <script src="{{ url_for('static', filename='js/ttt.js') }}"></script>
+    </body>
+
+</html>

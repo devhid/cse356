@@ -1,0 +1,7 @@
+__pycache__
+env.sh
+venv
+util/__pycache__
+config_secret.py
+ttt.ini
+ttt.wsgi

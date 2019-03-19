@@ -1,0 +1,65 @@
+body {
+    font-family: Raleway;
+}
+
+h1 {
+   /* font-family: "Trebuchet MS"; */
+}
+  
+#ttt-board { 
+    padding: 0px; 
+    margin: 0 auto; 
+}
+
+#ttt-board table {
+    border-collapse: collapse;
+}
+  
+#ttt-board tr td { 
+    width: 80px; 
+    height: 80px; 
+    border: 1px solid #1c1c1c; 
+    font-family: Helvetica; 
+    font-size: 30px; 
+    text-align: center; 
+}
+   
+#ttt-board tr td:hover { 
+    background: #e4e4e4; 
+    cursor: pointer; 
+}
+
+#logout-button {
+    padding-top: 1rem;
+}
+
+#login-greeting {
+    line-height: 0.5em;
+}
+
+#winner p {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+#login {
+    padding-top: 7.5rem;
+}
+
+/* td:first-of-type {
+    border-left-color: transparent !important;
+    border-top-color: transparent !important;
+}
+  
+td:nth-of-type(2) {
+    border-top-color: transparent !important;
+}
+  
+td:nth-of-type(3) {
+    border-right-color: transparent !important;
+    border-top-color: transparent !important;
+}
+  
+tr:nth-of-type(3) td {
+    border-bottom-color: transparent !important;
+} */
