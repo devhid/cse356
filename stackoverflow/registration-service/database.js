@@ -9,7 +9,7 @@ const client = new elasticsearch.Client({
 });
 
 /* index where user account information will be stored */
-const INDEX = "users"
+const INDEX = "users";
 
 /* Checks if a user already exists by checking the 
  * existence of the user's email and username in the database. 
@@ -35,8 +35,8 @@ async function addUser(email, username, password) {
         type: "_doc",
         refresh: "true",
         body: {
-            "email": email,
-            "username": username,
+            "email": email.toLowerCase(),
+            "username": username.toLowerCase(),
             "password": bcrypt.hashSync(password, 10),
             "key": crypto.randomBytes(64).toString('hex'),
             "email_verified": false
@@ -49,4 +49,4 @@ async function addUser(email, username, password) {
 module.exports = {
     userExists: userExists,
     addUser: addUser
-}
+};

@@ -17,29 +17,29 @@ app.use(express.json());
 
 /* Register a user if they do not already exist. */
 app.post('/adduser', async (req, res) => {
-    email = req.body["email"];
-    username = req.body["username"];
-    password = req.body["password"];
+    let email = req.body["email"];
+    let username = req.body["username"];
+    let password = req.body["password"];
 
-    if(!checkNotEmpty([email, username, password])) {
-        response = {"status": "error", "error": "One or more fields are empty."};
+    if(!notEmpty([email, username, password])) {
+        let response = {"status": "error", "error": "One or more fields are empty."};
         return res.json(response);
     }
     let userExists = await database.userExists(email, username);
 
     if(userExists) {
-        response = {"status": "error", "error": "A user with that email or username already exists."};
+        let response = {"status": "error", "error": "A user with that email or username already exists."};
         return res.json(response);
     }
 
     database.addUser(email, username, password);    
 
-    response = {"status": "OK"};
+    let response = {"status": "OK"};
     return res.json(response);
 });
 
 /* Checks if any of the variables in the fields array are empty. */
-function checkNotEmpty(fields) {
+function notEmpty(fields) {
     for(let i in fields) {
         if(!fields[i]) { return false; }
     }
