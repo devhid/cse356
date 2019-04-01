@@ -40,11 +40,11 @@ app.post('/deposit', upload.single('contents'), async (req, res) => {
 });
 
 app.get('/retrieve', async (req, res) => {
-    const filename = req.body['filename'];
-    const image = await retrieve(filename).catch((error) => res.json({"error": error}));
+    const filename = req.query['filename'];
+    const image = await retrieve(filename);
 
-    res.set('Content-Type', image.mimetype);
-    res.send(image.contents);
+    res.set({ 'Content-Type': image.mimetype });
+    return res.send(image.contents);
 });
 
 function deposit(filename, contents, mimetype) {
