@@ -11,7 +11,8 @@
 const mysql = require('mysql');
 
 const connectionOptions = {
-    user: 'root'
+    user: 'root',
+    database: "hw7"
 };
 
 const connection = mysql.createConnection(connectionOptions);
@@ -35,13 +36,14 @@ async function getAssistStatistics(club, position) {
                 reject(error);
             } else {
                 if(results.length == 0) {
-                    console.log("[DEBUG} : Results array is empty.");
+                    console.log("[DEBUG] : Results array is empty.");
+                    console.log(fields);
                     resolve(null);
                 } else {
                     /* calculate max assists, avg assists, and player who scored the most assists */
                     let max_assists = 0;
                     let avg_assists = 0;
-                    let player = result[0];
+                    let player = results[0];
 
                     console.log(`[DEBUG]: Initialized field, 'max_assists' = ${max_assists}.`);
                     console.log(`[DEBUG]: Initialized field, 'avg_assists' = ${avg_assists}.`);
