@@ -14,6 +14,8 @@ app.use(express.json());
 /* url to listen on */
 const URL = { host: 'http://127.0.0.1', port: 5000 };
 
+database.connect();
+
 app.get('/hw7', async (req, res) => {
     let response = {"status": "error", "message": ""};
 

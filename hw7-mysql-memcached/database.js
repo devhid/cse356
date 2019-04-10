@@ -14,16 +14,18 @@ const connectionOptions = {
     user: 'root'
 };
 
-const connection = mysql.createConnection(connectionOptions);
+function connect() {
+    const connection = mysql.createConnection(connectionOptions);
   
-connection.connect(function(err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-  
-    console.log('Connected as id ' + connection.threadId);
-});
+    connection.connect(function(err) {
+        if (err) {
+            console.error('error connecting: ' + err.stack);
+            return;
+        }
+      
+        console.log('Connected as id ' + connection.threadId);
+    });
+}
 
 async function getAssistStatistics(club, position) {
     const query = "select player, a, gs from assists where club = ? and pos = ?";
@@ -95,6 +97,7 @@ async function getAssistStatistics(club, position) {
 }
 
 module.exports = {
+    connect: connect,
     getAssistStatistics: getAssistStatistics
 }
  
