@@ -40,10 +40,13 @@ async function getAssistStatistics(club, position) {
                     console.log(fields);
                     resolve(null);
                 } else {
+                    results.sort((a,b) => (a.player > b.player) ? 1 : ((b.player > a.player) ? -1 : 0));
                     /* calculate max assists, avg assists, and player who scored the most assists */
                     let max_assists = 0;
                     let avg_assists = 0;
                     let player = results[0];
+
+                    console.log(results);
 
                     console.log(`[DEBUG]: Initialized field, 'max_assists' = ${max_assists}.`);
                     console.log(`[DEBUG]: Initialized field, 'avg_assists' = ${avg_assists}.`);
@@ -57,6 +60,10 @@ async function getAssistStatistics(club, position) {
                             console.log(`[DEBUG] Field, 'player.gs' = ${player.gs}`);
 
                             player = (result.gs > player.gs) ? result : player;
+                            if(result.gs === player.gs) {
+                                console.log("[DEBUG] result.gs === player.gs.");
+                                
+                            }
 
                             console.log(`[DEBUG] Field, 'player' = ${player}.`);
                         }
@@ -85,7 +92,7 @@ async function getAssistStatistics(club, position) {
                         "club": club,
                         "pos": position,
                         "max_assists": max_assists,
-                        "player": JSON_stringify(player, true).replace(/\"/g, ''),
+                        "player": player,
                         "avg_assists": avg_assists
                     }
 
@@ -94,16 +101,6 @@ async function getAssistStatistics(club, position) {
             }
         })
     });
-}
-
-function JSON_stringify(s, emit_unicode)
-{
-   var json = JSON.stringify(s);
-   return emit_unicode ? json : json.replace(/[\u007f-\uffff]/g,
-      function(c) { 
-        return '\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4);
-      }
-   );
 }
 
 module.exports = {

@@ -44,4 +44,4 @@ function generateOK() {
     };
 }
 
-app.listen(URL.port, URL.host, () => console.log(`Listening on ${URL.host}:${URL.port}...`));
+app.listen(URL.port, URL.host, () => console.log(`Listening on http://${URL.host}:${URL.port}...`));
