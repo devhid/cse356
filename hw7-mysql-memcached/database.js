@@ -8,7 +8,24 @@
  * A/90min: Assists / 90 Minutes
  */
 
-async function getAssistStatistics(connection, club, position) {
+const mysql = require('mysql');
+
+const connectionOptions = {
+    user: 'root'
+};
+
+const connection = mysql.createConnection(connectionOptions);
+  
+connection.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+  
+    console.log('Connected as id ' + connection.threadId);
+});
+
+async function getAssistStatistics(club, position) {
     const query = "select player, a, gs from assists where club = ? and pos = ?";
 
     return new Promise((resolve, reject) => {
@@ -78,7 +95,6 @@ async function getAssistStatistics(connection, club, position) {
 }
 
 module.exports = {
-    connect: connect,
     getAssistStatistics: getAssistStatistics
 }
  

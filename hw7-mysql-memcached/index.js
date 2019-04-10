@@ -1,6 +1,5 @@
 /* library imports */
 const express = require('express');
-const mysql = require('mysql2');
 
 /* internal imports */
 const database = require('./database');
@@ -12,14 +11,8 @@ require('express-async-errors');
 /* use json middleware */
 app.use(express.json());
 
-/* db vars */
-const connectionOptions = { user: 'root' };
-let connection = null;
-
 /* url to listen on */
-const URL = { host: 'http://127.0.0.1', port: 5000 };
-
-connect();
+const URL = { host: '127.0.0.1', port: 5000 };
 
 app.get('/hw7', async (req, res) => {
     let response = {"status": "error", "message": ""};
@@ -32,7 +25,7 @@ app.get('/hw7', async (req, res) => {
         return res.json(response);
     }
 
-    const assistStatistics = await database.getAssistStatistics(connection, club, position);
+    const assistStatistics = await database.getAssistStatistics(club, position);
     if(assistStatistics === null) {
         response["message"] = "Specified club or pos fields are invalid.";
         return res.json(response);
@@ -49,19 +42,6 @@ function generateOK() {
         "player": "",
         "avg_assists": 0
     };
-}
-
-function connect() {
-    connection = mysql.createConnection(connectionOptions);
-  
-    connection.connect(function(err) {
-        if (err) {
-            console.error('error connecting: ' + err.stack);
-            return;
-        }
-      
-        console.log('Connected as id ' + connection.threadId);
-    });
 }
 
 app.listen(URL.port, URL.host, () => console.log(`Listening on ${URL.host}:${URL.port}...`));
