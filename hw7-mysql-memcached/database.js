@@ -85,7 +85,7 @@ async function getAssistStatistics(club, position) {
                         "club": club,
                         "pos": position,
                         "max_assists": max_assists,
-                        "player": player,
+                        "player": JSON_stringify(player, true).replace(/\"/g, ''),
                         "avg_assists": avg_assists
                     }
 
@@ -94,6 +94,16 @@ async function getAssistStatistics(club, position) {
             }
         })
     });
+}
+
+function JSON_stringify(s, emit_unicode)
+{
+   var json = JSON.stringify(s);
+   return emit_unicode ? json : json.replace(/[\u007f-\uffff]/g,
+      function(c) { 
+        return '\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4);
+      }
+   );
 }
 
 module.exports = {
