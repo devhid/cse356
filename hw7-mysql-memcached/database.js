@@ -11,9 +11,7 @@
 const mysql = require('mysql');
 
 const connectionOptions = {
-    host: '127.0.0.1',
-    port: '3306',
-    database: 'hw7'
+    user: 'root'
 };
 
 const connection = mysql.createConnection(connectionOptions);
