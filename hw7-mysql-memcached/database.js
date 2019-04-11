@@ -26,7 +26,7 @@ connection.connect(function(err) {
     console.log('Connected as id ' + connection.threadId);
 });
 
-async function getAssistStatistics(club, position) {
+async function getAssistStatisticsDebug(club, position) {
     const query = "select player, a, gs from assists where club = ? and pos = ?";
 
     return new Promise((resolve, reject) => {
@@ -87,6 +87,60 @@ async function getAssistStatistics(club, position) {
 
                     console.log(`[DEBUG]: Field, 'avg_assists' = ${avg_assists}.`);
                     console.log(`[DEBUG]: Field, 'player' = ${player}.`);
+
+                    let stats = {
+                        "club": club,
+                        "pos": position,
+                        "max_assists": max_assists,
+                        "player": player,
+                        "avg_assists": avg_assists
+                    }
+
+                    resolve(stats);
+                }
+            }
+        })
+    });
+}
+async function getAssistStatistics(club, position) {
+    const query = "select player, a, gs from assists where club = ? and pos = ?";
+
+    return new Promise((resolve, reject) => {
+        connection.query(query, [club, position], function(error, results, fields) {
+            if(error) {
+                reject(error);
+            } else {
+                if(results.length == 0) {
+                    resolve(null);
+                } else {
+                    /* sort results by player name because script requires it */
+                    results.sort((a,b) => (a.player > b.player) ? 1 : ((b.player > a.player) ? -1 : 0));
+                    
+                    /* calculate max assists, avg assists, and player who scored the most assists */
+                    let max_assists = 0;
+                    let avg_assists = 0;
+                    let player = results[0];
+
+                    for(let result of results) {
+                        /* if there is a tie for assists, favor person with higher goals scored */
+                        if(result.a === max_assists) {
+                            player = (result.gs > player.gs) ? result : player;
+                        }
+
+                        /* update person who has higher assists and max_axxists with their assist count */
+                        if(result.a > max_assists) {
+                            max_assists = result.a;
+                            player = result;
+                        }
+                        
+                        /* avg will need sum of all assists */
+                        avg_assists += result.a;
+                    }
+
+                    /* divide sum of assists by number of players to get avg assists */
+                    avg_assists = avg_assists / results.length;
+                    /* get player field from row object */
+                    player = player.player;
 
                     let stats = {
                         "club": club,
