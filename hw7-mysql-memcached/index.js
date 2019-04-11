@@ -16,13 +16,6 @@ app.use(express.json());
 const URL = { host: '127.0.0.1', port: 5000 };
 
 app.get('/hw7', async (req, res) => {
-    const key = club + "|" + pos;
-
-    const cache = await getCache(key);
-    if(cache != null) {
-        return res.json(cache);
-    }
-    
     let response = {"status": "error", "message": ""};
 
     const club = req.query['club'];
@@ -33,13 +26,20 @@ app.get('/hw7', async (req, res) => {
         return res.json(response);
     }
 
+    const key = club + "|" + pos;
+
+    const cache = await getCache(key);
+    if(cache != null) {
+        return res.json(cache);
+    }
+
     const assistStatistics = await database.getAssistStatistics(club, position);
     if(assistStatistics === null) {
         response["message"] = "Specified club or pos fields are invalid.";
         return res.json(response);
     }
     
-    memcached.add(key, assistStatistics, 60, (err) => console.log(err)).
+    memcached.add(key, assistStatistics, 60, (err) => console.log(err));
 
     res.json(assistStatistics);
 });
